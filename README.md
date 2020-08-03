@@ -4,7 +4,7 @@ challenge-seg360 is a spring boot application deployed in docker and connected t
 
 ## Description
 
-This solution was designed using the spring-boot framework and was deployed in docker containers. In turn, we use docker-compose to manage and communicate the application and database containers.
+This solution was designed using the spring-boot framework and was deployed in docker containers. In turn, we use docker-compose to manage and communicate the application and database containers. Resilience4j was used to manage error tolerance.
 
 This decision was made due to its easy configuration through yaml files.
 
@@ -40,3 +40,7 @@ To run the main service go to [http://localhost:8060/swagger-ui.html](http://loc
 - To unsubscribe the services press Ctrl + C
 - Make sure that in some cases you need to run the Docker and Docker-compose Commands as administrator. (In the case of Ubuntu with sudo, for Windows it was not necessary, but it is necessary to run the terminal as Administrator)
 - If after running docker-compose up you get the error "port is already allocated" run docker ps and copy the name of the container to stop, then run docker stop container_name and try again
+
+## Health
+
+As for the enpoint health, I have not yet finished, I need to carry out a research work since in the actuator management I have no experience.
