@@ -6,7 +6,6 @@ challenge-seg360 is a spring boot application deployed in docker and connected t
 
 This solution was designed using the spring-boot framework and was deployed in docker containers. In turn, we use docker-compose to manage and communicate the application and database containers. Resilience4j was used to manage error tolerance.
 
-This decision was made due to its easy configuration through yaml files.
 
 ## Prerequisites
 
@@ -44,3 +43,5 @@ To run the main service go to [http://localhost:8060/swagger-ui.html](http://loc
 ## Health
 
 As for the enpoint health, I have not yet finished, I need to carry out a research work since in the actuator management I have no experience.
+
+[http://localhost:8060/health](http://localhost:8060/health)
