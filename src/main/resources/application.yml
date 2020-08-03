@@ -1,0 +1,110 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: challenge-seg360
+  datasource:
+    url: jdbc:mysql://mysql-db-service:3306/items_db?createDatabaseIfNotExist=true
+    username: joicm9vdCJ9
+    password: wYXNzd29yZCJ9
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+#Rest api mercado libre
+
+mercadolibre:
+  api:
+    base: https://api.mercadolibre.com/items/
+
+#Health 
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: /
+      path-mapping:
+        health: health
+  health:
+    diskspace:
+      enabled: false
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: false
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        esilience4j.circuitbreaker.calls: true
+      
+
+resilience4j.circuitbreaker:
+    configs:
+        default:
+            registerHealthIndicator: true
+            slidingWindowSize: 10
+            minimumNumberOfCalls: 5
+            permittedNumberOfCallsInHalfOpenState: 3
+            automaticTransitionFromOpenToHalfOpenEnabled: true
+            waitDurationInOpenState: 5s
+            failureRateThreshold: 50
+            eventConsumerBufferSize: 10
+            recordExceptions:
+                - org.springframework.web.client.HttpServerErrorException
+                - java.util.concurrent.TimeoutException
+                - java.io.IOException
+        shared:
+            slidingWindowSize: 100
+            permittedNumberOfCallsInHalfOpenState: 30
+            waitDurationInOpenState: 1s
+            failureRateThreshold: 50
+            eventConsumerBufferSize: 10
+    instances:
+        itemService:
+            baseConfig: default
+            
+resilience4j.retry:
+    configs:
+        default:
+            maxRetryAttempts: 3
+            waitDuration: 100
+            retryExceptions:
+                - org.springframework.web.client.HttpServerErrorException
+                - java.util.concurrent.TimeoutException
+                - java.io.IOException
+    instances:
+        itemService:
+            baseConfig: default
+            
+resilience4j.ratelimiter:
+    configs:
+        default:
+            registerHealthIndicator: false
+            limitForPeriod: 10
+            limitRefreshPeriod: 1s
+            timeoutDuration: 0
+            eventConsumerBufferSize: 100
+    instances:
+        itemService:
+            baseConfig: default
+            
+resilience4j.timelimiter:
+    configs:
+        default:
+            cancelRunningFuture: false
+            timeoutDuration: 2s
+    instances:
+        itemService:
+            baseConfig: default
