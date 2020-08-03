@@ -2,10 +2,10 @@ package com.mercadolibre.challenge.api.entities;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,7 +27,8 @@ public class Child {
 	private String id;
 	@Column(name = "stop_time")
 	private Date stopTime;
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne
+    @JoinColumn(name = "FK_INVOICE", nullable = false, updatable = false)
 	private Item parent;
 	
 	

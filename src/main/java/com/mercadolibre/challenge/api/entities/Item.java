@@ -3,6 +3,7 @@ package com.mercadolibre.challenge.api.entities;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 
 @Data
 @Builder(toBuilder = true)
@@ -36,7 +35,7 @@ public class Item {
 	private Date startTime;
 	@Column(name = "stop_time")
 	private Date stopTime;
-	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Child> children;
 
 }

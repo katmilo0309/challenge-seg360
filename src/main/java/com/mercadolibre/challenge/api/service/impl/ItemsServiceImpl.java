@@ -44,7 +44,6 @@ public class ItemsServiceImpl implements ItemsService {
 			itemResponse = getItemFromService(id);
 			Item item = ObjectBuilder.build(itemResponse);
 			this.itemRepository.save(item);
-			LOGGER.info("Item "+item.getTitle()+ " saved");
 		}
 
 		return new ResponseEntity<ItemDTO>(itemResponse, HttpStatus.OK);
@@ -61,7 +60,6 @@ public class ItemsServiceImpl implements ItemsService {
 		ItemDTO item = MapperResponseToDto.convert(response.getBody(), ItemDTO.class);
 		
 		if (item != null) {
-			LOGGER.info("Item "+item.getTitle()+ " FOUND inservice");
 			item.setChildrenList(getChildrenList(id));
 		}
 		return item;
@@ -71,7 +69,6 @@ public class ItemsServiceImpl implements ItemsService {
 		Item item = null;
 		try {
 			item = this.itemRepository.findById(id).get();
-			LOGGER.info("Item "+item.getTitle()+ " FOUND");
 			return ObjectBuilder.build(item);
 		} catch (Exception e) {
 			return null;
